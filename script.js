@@ -1,5 +1,6 @@
 const weatherDiv = document.querySelector(".weather");
 const userInput = document.querySelector("#userInput");
+const okUserInput = document.querySelector("#okUserInput");
 const currentLocation = document.querySelector("#currentLocation");
 
 class App {
@@ -131,14 +132,15 @@ currentLocation.addEventListener("click", () => {
     const data = await app.fetchWeatherByLatAndLon();
 
     app.show(data);
+    userInput.value = "";
   });
 });
 
-userInput.addEventListener("change", async (event) => {
-  const input = event.target.value;
+okUserInput.addEventListener("click", async () => {
+  const value = userInput.value;
 
-  if (/\d+/g.test(input)) {
-    const [lat, lon] = input.replace(/\s+/g, "").split(",");
+  if (/\d+/g.test(value)) {
+    const [lat, lon] = value.replace(/\s+/g, "").split(",");
     app.setPosition(+lat, +lon);
 
     const data = await app.fetchWeatherByLatAndLon();
@@ -146,7 +148,7 @@ userInput.addEventListener("change", async (event) => {
     app.show(data);
   } else {
     const res = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${input}&units=metric&appid=${app.apiKey}`
+      `https://api.openweathermap.org/data/2.5/weather?q=${value}&units=metric&appid=${app.apiKey}`
     );
     const data = await res.json();
 
