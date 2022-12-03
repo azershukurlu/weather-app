@@ -1,4 +1,5 @@
 const weatherDiv = document.querySelector(".weather");
+const userInput = document.querySelector("#userInput");
 const currentLocation = document.querySelector("#currentLocation");
 
 class App {
@@ -131,4 +132,24 @@ currentLocation.addEventListener("click", () => {
 
     app.show(data);
   });
+});
+
+userInput.addEventListener("change", async (event) => {
+  const input = event.target.value;
+
+  if (/\d+/g.test(input)) {
+    const [lat, lon] = input.replace(/\s+/g, "").split(",");
+    app.setPosition(+lat, +lon);
+
+    const data = await app.fetchWeatherByLatAndLon();
+
+    app.show(data);
+  } else {
+    const res = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${input}&units=metric&appid=${app.apiKey}`
+    );
+    const data = await res.json();
+
+    app.show(data);
+  }
 });
