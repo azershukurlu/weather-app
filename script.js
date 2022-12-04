@@ -62,7 +62,10 @@ class App {
     const weather = data.weather[0];
 
     let div = `
-      <h4 class="mb-4 text-center">${city}, ${country}</h4>
+      <div class="d-flex justify-content-between align-items-center">
+        <h4>${city}, ${country}</h4>
+        <h6>${new Date(data.dt * 1000).toLocaleString("az-AZ")}</h6>
+      </div>
 
       <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
